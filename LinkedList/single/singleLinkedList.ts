@@ -1,12 +1,15 @@
 class LinkedListNode {
-  constructor(data) {
+  data: any;
+  next?: LinkedListNode | null;
+  constructor(data: any) {
     this.data = data;
     this.next = null;
   }
 }
 
 class LinkedListIterator {
-  constructor(node) {
+  currentNode: LinkedListNode;
+  constructor(node: any) {
     this.currentNode = node;
   }
 
@@ -15,7 +18,7 @@ class LinkedListIterator {
   }
 
   next() {
-    this.currentNode = this.currentNode.next;
+    this.currentNode = this.currentNode.next!;
     return this;
   }
 
@@ -25,7 +28,11 @@ class LinkedListIterator {
 }
 
 class SingleLinkedList {
-  constructor(unique) {
+  length: number;
+  head: LinkedListNode | null;
+  tail: LinkedListNode | null;
+  unique?: boolean;
+  constructor(unique?: boolean) {
     this.length = 0;
     this.head = null;
     this.tail = null;
@@ -40,7 +47,8 @@ class SingleLinkedList {
   printList() {
     let output = "";
     for (let itr = this.begin(); itr.current() !== null; itr.next()) {
-      output += itr.data() + " -> ";
+      let data = itr.data()?.data ? itr.data().data : itr.data();
+      output += data + " -> ";
       if (itr.current().next == null) {
         output += "null";
       }
@@ -48,7 +56,7 @@ class SingleLinkedList {
     console.log(output);
   }
 
-  find(data) {
+  find(data: any) {
     for (let itr = this.begin(); itr.current() !== null; itr.next()) {
       if (itr.data() == data) {
         return itr.current();
@@ -57,18 +65,18 @@ class SingleLinkedList {
     return null;
   }
 
-  isExist(data) {
+  isExist(data: any) {
     if (this.find(data)) {
       return true;
     }
     return false;
   }
 
-  canInsert(data) {
+  canInsert(data: any) {
     return data && !(this.unique && this.isExist(data));
   }
 
-  findParent(node) {
+  findParent(node: any) {
     for (let itr = this.begin(); itr.current() !== null; itr.next()) {
       if (itr.current().next === node) {
         return itr.current();
@@ -77,20 +85,21 @@ class SingleLinkedList {
     return null;
   }
 
-  insertLast(data) {
+  insertLast(data: any) {
     if (!this.canInsert(data)) return;
     const newNode = new LinkedListNode(data);
     if (this.head === null) {
       this.head = newNode;
       this.tail = newNode;
     } else {
+      if (!this.tail) return;
       this.tail.next = newNode;
       this.tail = newNode;
     }
     this.length++;
   }
 
-  insertAfter(existingNodeData, data) {
+  insertAfter(existingNodeData: any, data: any) {
     const node = this.find(existingNodeData);
     if (!node) return;
 
@@ -103,7 +112,7 @@ class SingleLinkedList {
     this.length++;
   }
 
-  insertBefore(existingNodeData, data) {
+  insertBefore(existingNodeData: any, data: any) {
     const node = this.find(existingNodeData);
     if (!node) return;
 
@@ -120,7 +129,7 @@ class SingleLinkedList {
     this.length++;
   }
 
-  insertFirst(data) {
+  insertFirst(data: any) {
     if (!this.canInsert(data)) return;
     const newNode = new LinkedListNode(data);
     if (this.head === null) {
@@ -135,11 +144,11 @@ class SingleLinkedList {
 
   deleteHead() {
     if (this.head === null) return;
-    this.head = this.head.next;
+    this.head = this.head.next!;
     this.length--;
   }
 
-  deleteNode(data) {
+  deleteNode(data: any) {
     const node = this.find(data);
     if (!node) return;
 
@@ -147,12 +156,13 @@ class SingleLinkedList {
       this.head = null;
       this.tail = null;
     } else if (this.head === node) {
-      this.head = node.next;
+      this.head = node.next!;
     } else {
       const parent = this.findParent(node);
       if (this.tail === node) {
         this.tail = parent;
       } else {
+        if (!parent) return;
         parent.next = node.next;
       }
     }
@@ -161,8 +171,4 @@ class SingleLinkedList {
   }
 }
 
-module.exports = {
-  SingleLinkedList: SingleLinkedList,
-  LinkedListNode: LinkedListNode,
-  LinkedListIterator: LinkedListIterator,
-};
+export { SingleLinkedList, LinkedListNode, LinkedListIterator };

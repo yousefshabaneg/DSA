@@ -1,15 +1,15 @@
-const {
+import {
   SingleLinkedList,
   LinkedListNode,
-} = require("../LinkedList/single/singleLinkedList");
+} from "../LinkedList/single/singleLinkedList";
 
 class Queue {
   #dataList;
-  constructor(unique) {
+  constructor(unique?: any) {
     this.#dataList = new SingleLinkedList(unique);
   }
 
-  enqueue(_data) {
+  enqueue(_data: any) {
     this.#dataList.insertLast(_data);
   }
 
@@ -37,4 +37,4 @@ class Queue {
   }
 }
 
-module.exports = Queue;
+export default Queue;

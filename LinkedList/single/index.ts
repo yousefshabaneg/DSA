@@ -1,4 +1,4 @@
-const { SingleLinkedList } = require("./singleLinkedList.js");
+import { SingleLinkedList } from "./singleLinkedList";
 let singleList = new SingleLinkedList();
 singleList.insertLast(1);
 singleList.insertLast(2);
