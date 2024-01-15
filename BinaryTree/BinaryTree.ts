@@ -5,6 +5,7 @@ class TreeNode<T> {
   right?: TreeNode<T>;
   constructor(public data: T) {}
 }
+
 class BinaryTree<T> {
   private root?: TreeNode<T>;
 
@@ -31,6 +32,7 @@ class BinaryTree<T> {
       }
     }
   }
+
   print() {
     if (!this.root) {
       console.log("Tree is Empty");
@@ -51,6 +53,43 @@ class BinaryTree<T> {
       queue.print();
     }
     console.log(output);
+  }
+
+  heightFromNode(node?: TreeNode<T>): number {
+    if (!node) return 0;
+    return (
+      1 +
+      Math.max(this.heightFromNode(node.left), this.heightFromNode(node.right))
+    );
+  }
+
+  getTreeHeight() {
+    return this.heightFromNode(this.root);
+  }
+
+  preOrder() {
+    this.inOrderTraversal(this.root);
+  }
+
+  preOrderTraversal(node?: TreeNode<T>) {
+    if (!node) return;
+    console.log(node.data + " -> ");
+    this.preOrderTraversal(node.left);
+    this.preOrderTraversal(node.right);
+  }
+
+  postOrderTraversal(node?: TreeNode<T>) {
+    if (!node) return;
+    this.preOrderTraversal(node.left);
+    this.preOrderTraversal(node.right);
+    console.log(node.data + " -> ");
+  }
+
+  inOrderTraversal(node?: TreeNode<T>) {
+    if (!node) return;
+    this.preOrderTraversal(node.left);
+    console.log(node.data + " -> ");
+    this.preOrderTraversal(node.right);
   }
 }
 
